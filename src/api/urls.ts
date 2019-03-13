@@ -14,15 +14,15 @@ export const URLS: Status[] = [
         status: ResponseCode.Unknown
     },
     {
-        system: System.Cloud,
+        system: System.MARC,
         task: Task.Live,
         url: "https://cloud.caspeco.se/api/test/get",
         status: ResponseCode.Unknown
     },
     {
-        system: System.ReverseProxy,
+        system: System.WebPlatform,
         task: Task.Live,
-        url: "https://cloud.caspeco.se/.where",
+        url: "https://cloud.caspeco.se",
         status: ResponseCode.Unknown
     },
     {
@@ -43,4 +43,10 @@ export const URLS: Status[] = [
         url: "https://caspecodev.visualstudio.com/Cloud/_apis/build/status/MARC%20Build%20&%20Unit%20Test",
         status: ResponseCode.Unknown
     },
+    {
+        system: System.ReverseProxy,
+        task: Task.Live,
+        url: "https://cloud.caspeco.se/.where",
+        status: ResponseCode.Unknown
+    }
 ];

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { allBadges, Status, defaultPollingRate } from "../../api";
+import { allStatuses, Status, defaultPollingRate } from "../../api";
 import { URLS } from "../../api/urls";
 import StatusLight from "../statusLight/StatusLight";
 
@@ -20,16 +20,16 @@ class App extends PureComponent<IAppProps, IAppState> {
   }
 
   async componentDidMount() {
-    this.badges();
-    this.interval = setInterval(this.badges, defaultPollingRate);
+    this.allStatuses();
+    this.interval = setInterval(this.allStatuses, defaultPollingRate);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  private badges = async (): Promise<void> => {
-    const statuses = await allBadges(URLS);
+  private allStatuses = async (): Promise<void> => {
+    const statuses = await allStatuses(URLS);
     this.setState({ statuses })
   }
 

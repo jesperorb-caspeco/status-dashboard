@@ -1,7 +1,6 @@
 export const defaultPollingRate = 60000;
 
 export enum System {
-    Cloud = "Cloud",
     WebPlatform = "WebPlatform",
     MARC = "MARC",
     ReverseProxy = "ReverseProxy"
@@ -31,10 +30,14 @@ export async function getStatus(status: Status) {
     try {
         const response = await fetch(status.url);
         const badge = await response.text();
+        const isLiveAndWell = status.task === Task.Live && response.ok;
         if(status.system === System.ReverseProxy && response.ok) {
             return success(status);
         }
-        if(status.system === System.Cloud && status.task === Task.Live && response.ok) {
+        if(status.system === System.MARC && isLiveAndWell) {
+            return success(status);
+        }
+        if(status.system === System.WebPlatform && isLiveAndWell) {
             return success(status);
         }
         if(badge.includes("succeeded") && response.ok) {
@@ -49,7 +52,7 @@ export async function getStatus(status: Status) {
     }
 }
 
-export async function allBadges(urls: Status[]) {
+export async function allStatuses(urls: Status[]) {
     return Promise.all(urls.map(getStatus));
 }
 
