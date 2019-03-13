@@ -7,6 +7,7 @@ interface IStatusLightProps {
     system: System;
     text: string;
     type: ResponseCode;
+    useIcon?: boolean;
 }
 
 const StatusLight: SFC<IStatusLightProps> = ({ system, text, type }: IStatusLightProps) => {

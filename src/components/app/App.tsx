@@ -37,7 +37,7 @@ class App extends PureComponent<IAppProps, IAppState> {
     if (!statuses) {
       return null;
     }
-    return statuses.map((s, i) => <StatusLight key={i} system={s.system} text={s.task} type={s.status} />)
+    return statuses.map((s, i) => <StatusLight key={i} system={s.system} text={s.task} type={s.status} useIcon />)
   }
 
   render() {
