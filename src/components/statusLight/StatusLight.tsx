@@ -13,7 +13,7 @@ interface IStatusLightProps {
 const StatusLight: SFC<IStatusLightProps> = ({ system, text, type }: IStatusLightProps) => {
     return(
         <div className="status-container">
-            <div className="status__text">{ system } <span>{ text }</span></div>
+            <div className="status__text">{ system }&nbsp;<span>{ text }</span></div>
           <div className={cn("status__light", { [`status__light--${type}`]: true })} />
         </div>
     )
