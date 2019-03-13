@@ -106,5 +106,5 @@ function getMinutes(past: number | undefined): number {
 
 function getHours(past: number | undefined): number {
     const time = past || new Date().getTime();
-    return Math.round(Math.abs(new Date().getTime() - time) / (1000 * 60 * 60) % 24);
+    return Math.floor(Math.abs(new Date().getTime() - time) / (1000 * 60 * 60) % 24);
 }
