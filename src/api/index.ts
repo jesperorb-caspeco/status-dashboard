@@ -24,6 +24,9 @@ export interface Status {
     task: Task;
     url: string;
     status: ResponseCode
+    time?: number;
+    hours?: number;
+    minutes?: number;
 }
 
 export async function getStatus(status: Status) {
@@ -56,14 +59,52 @@ export async function allStatuses(urls: Status[]) {
     return Promise.all(urls.map(getStatus));
 }
 
+function assignStatus(status: Status, responseCode: ResponseCode) {
+    return Object.assign({}, status, { status: responseCode, time: Date.now() });
+}
+
 function success(status: Status) {
-    return Object.assign({}, status, { status: ResponseCode.Success });
+    return assignStatus(status, ResponseCode.Success);
 }
 
 function failed(status: Status) {
-    return Object.assign({}, status, { status: ResponseCode.Failed });
+    return assignStatus(status, ResponseCode.Failed);
 }
 
 function unknown(status: Status) {
-    return Object.assign({}, status, { status: ResponseCode.Unknown });
+    return assignStatus(status, ResponseCode.Unknown);
+}
+
+export function compareStatuses(previousStatuses: Status[], newStatuses: Status[]) {
+    if(previousStatuses.length > 0 && newStatuses.length > 0) {
+        const newSorted = newStatuses.sort(sortByName);
+        const previousSorted = previousStatuses.sort(sortByName);
+        const newDate = Date.now();
+        return newSorted.map((s, i) => s.status !== previousSorted[i].status
+            ? Object.assign(s, { time: newDate, hours: getHours(newDate), minutes: getMinutes(newDate) })
+            : Object.assign(s, { time: previousSorted[i].time, hours: getHours(previousSorted[i].time), minutes: getMinutes(previousSorted[i].time) })
+        );
+    }
+    return newStatuses;
+}
+
+function sortByName(a: Status, b: Status): number {
+    if((a.system + a.task) < (b.system + b.task)) {
+        return -1;
+    }
+    if((a.system + a.task) > (b.system + b.task)) {
+        return 1;
+    }
+    return 0;
+}
+
+function getMinutes(past: number | undefined): number {
+    const time = past || new Date().getTime();
+    return Math.round(Math.abs(new Date().getTime() - time) / (1000 * 60) % 60)
+    
+}
+
+function getHours(past: number | undefined): number {
+    const time = past || new Date().getTime();
+    return Math.round(Math.abs(new Date().getTime() - time) / (1000 * 60 * 60) % 24);
 }

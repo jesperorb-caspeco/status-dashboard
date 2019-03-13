@@ -8,6 +8,14 @@
     justify-content: center;
 }
 
+.last-updated {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-weight: bold;
+    color: #777;
+}
+
 @media (max-width: 1350px) {
     .app {
         grid-template-columns: 1fr 1fr 1fr;
