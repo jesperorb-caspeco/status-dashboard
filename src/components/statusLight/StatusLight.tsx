@@ -25,8 +25,8 @@ const StatusLight: SFC<IStatusLightProps> = ({
         {system}&nbsp;<span>{text}</span>
       </div>
       <div className={cn("status__light", { [`status__light--${type}`]: true })}>
-        <div>
-          {" "}
+        <div> 
+          {" "} 
           {hours} h {minutes} m
         </div>
       </div>

@@ -45,7 +45,7 @@ class App extends PureComponent<IAppProps, IAppState> {
   private setTheme = (checked: boolean): void => {
     let bg = "#f1f1f1";
     let text = "#333333";
-    if (checked) {
+    if (!checked) {
       bg = "#333333";
       text = "#f1f1f1";
     }
@@ -76,6 +76,8 @@ class App extends PureComponent<IAppProps, IAppState> {
   };
 
   render() {
+    const checked = <div style={{ paddingTop: 2, paddingLeft: 4 }}>🌝</div>;
+    const unchecked = <div style={{paddingTop: 2, paddingLeft: 4 }}>🌛</div>;
     return (
       <div className="app">
         <div className="last-updated">
@@ -83,7 +85,7 @@ class App extends PureComponent<IAppProps, IAppState> {
           {this.state.lastUpdated && this.state.lastUpdated.toLocaleString("sv-SE")}
         </div>
         <div className="toggle-switch">
-          <Switch onChange={this.handleChange} checked={this.state.checked} />
+          <Switch onColor="#80adfa" checkedIcon={checked} uncheckedIcon={unchecked} onChange={this.handleChange} checked={this.state.checked} />
         </div>
         {this.renderStatuses(this.state.statuses)}
       </div>
