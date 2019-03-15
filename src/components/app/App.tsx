@@ -1,12 +1,14 @@
 import React, { PureComponent } from "react";
 import Switch from "react-switch";
-import { allStatuses, Status, defaultPollingRate, compareStatuses } from "../../api";
+import { allStatuses, Status, defaultPollingRate, compareStatuses, setStatusesInLocalStorage } from "../../api";
 import { URLS } from "../../api/urls";
 import StatusLight from "../statusLight/StatusLight";
 
 import "./App.css";
 
-interface IAppProps {}
+interface IAppProps {
+  statuses: Status[];
+}
 
 interface IAppState {
   statuses: Status[];
@@ -20,11 +22,12 @@ class App extends PureComponent<IAppProps, IAppState> {
   state = {
     statuses: [],
     lastUpdated: new Date(),
-    checked: false,
+    checked: true,
   };
 
   async componentDidMount() {
-    this.allStatuses();
+    const { statuses } = this.props;
+    this.setState({ statuses }, this.allStatuses)
     this.interval = setInterval(this.allStatuses, defaultPollingRate);
   }
 
@@ -39,16 +42,16 @@ class App extends PureComponent<IAppProps, IAppState> {
         statuses: compareStatuses(previousState.statuses, statuses),
         lastUpdated: new Date(),
       };
-    });
+    }, this.setInLocalStorage);
   };
 
+  private setInLocalStorage = () => {
+    setStatusesInLocalStorage(this.state.statuses);
+  }
+
   private setTheme = (checked: boolean): void => {
-    let bg = "#f1f1f1";
-    let text = "#333333";
-    if (!checked) {
-      bg = "#333333";
-      text = "#f1f1f1";
-    }
+    let bg = checked ? "#f1f1f1" : "#333";
+    let text = checked ? "#333" : "#f1f1f1";
     const root = document.documentElement;
     root.style.setProperty("--text-color", text);
     root.style.setProperty("--bg-color", bg);

@@ -55,6 +55,22 @@ export async function getStatus(status: Status) {
   }
 }
 
+export function getStatusesFromLocalStorage(): Status[] {
+  try {
+    const statuses = localStorage.getItem("statuses");
+    if (statuses) {
+      return JSON.parse(statuses);
+    }
+    return [];
+  } catch(error) {
+      return [];
+  }
+}
+
+export function setStatusesInLocalStorage(statuses: Status[]): void {
+  localStorage.setItem("statuses", JSON.stringify(statuses));
+}
+
 export async function allStatuses(urls: Status[]) {
   return Promise.all(urls.map(getStatus));
 }
