@@ -1,35 +1,49 @@
+:root {
+  --text-color: #333333;
+  --bg-color: #f1f1f1;
+}
+
 .app {
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 1fr;
-    grid-gap: 1rem;
-    justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  grid-gap: 1rem;
+  justify-content: center;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .last-updated {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-weight: bold;
-    color: #777;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  opacity: 0.5;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
 }
 
 @media (max-width: 1350px) {
-    .app {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+  .app {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 @media (max-width: 1000px) {
-    .app {
-        grid-template-columns: 1fr 1fr;
-    }
+  .app {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 600px) {
-    .app {
-        grid-template-columns: 1fr;
-    }
+  .app {
+    grid-template-columns: 1fr;
+  }
 }
