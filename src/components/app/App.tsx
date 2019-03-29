@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Switch from "react-switch";
-import { allStatuses, Status, defaultPollingRate, compareStatuses, setStatusesInLocalStorage } from "../../api";
+import { allStatuses, Status, defaultPollingRate, compareStatuses, setStatusesInLocalStorage, saveTheme, getTheme } from "../../api";
 import { URLS } from "../../api/urls";
 import StatusLight from "../statusLight/StatusLight";
 
@@ -22,13 +22,14 @@ class App extends PureComponent<IAppProps, IAppState> {
   state = {
     statuses: [],
     lastUpdated: new Date(),
-    checked: true,
+    checked: true
   };
 
   async componentDidMount() {
     const { statuses } = this.props;
     this.setState({ statuses }, this.allStatuses)
     this.interval = setInterval(this.allStatuses, defaultPollingRate);
+    this.handleChange(getTheme());
   }
 
   componentWillUnmount() {
@@ -55,11 +56,12 @@ class App extends PureComponent<IAppProps, IAppState> {
     const root = document.documentElement;
     root.style.setProperty("--text-color", text);
     root.style.setProperty("--bg-color", bg);
+    saveTheme(checked);
   };
 
   private handleChange = (checked: boolean): void => {
     this.setTheme(checked);
-    this.setState(prev => ({ checked: !prev.checked }));
+    this.setState({ checked });
   };
 
   renderStatuses = (statuses: Status[] | null) => {
@@ -72,6 +74,7 @@ class App extends PureComponent<IAppProps, IAppState> {
         system={s.system}
         text={s.task}
         type={s.status}
+        days={s.days}
         hours={s.hours}
         minutes={s.minutes}
       />

@@ -25,6 +25,7 @@ export interface Status {
   url: string;
   status: ResponseCode;
   time?: number;
+  days?: number;
   hours?: number;
   minutes?: number;
 }
@@ -71,6 +72,15 @@ export function setStatusesInLocalStorage(statuses: Status[]): void {
   localStorage.setItem("statuses", JSON.stringify(statuses));
 }
 
+export function saveTheme(checked: boolean) {
+  localStorage.setItem("theme", checked.toString());
+}
+
+export function getTheme() {
+  const theme = localStorage.getItem("theme");
+  return theme === "false" ? false : true;
+}
+
 export async function allStatuses(urls: Status[]) {
   return Promise.all(urls.map(getStatus));
 }
@@ -100,11 +110,13 @@ export function compareStatuses(previousStatuses: Status[], newStatuses: Status[
       s.status !== previousSorted[i].status
         ? Object.assign(s, {
             time: newDate,
+            days: getDays(newDate),
             hours: getHours(newDate),
             minutes: getMinutes(newDate),
           })
         : Object.assign(s, {
             time: previousSorted[i].time,
+            days: getDays(newDate),
             hours: getHours(previousSorted[i].time),
             minutes: getMinutes(previousSorted[i].time),
           })
@@ -131,4 +143,9 @@ function getMinutes(past: number | undefined): number {
 function getHours(past: number | undefined): number {
   const time = past || new Date().getTime();
   return Math.floor((Math.abs(new Date().getTime() - time) / (1000 * 60 * 60)) % 24);
+}
+
+function getDays(past: number | undefined): number {
+  const time = past || new Date().getTime();
+  return Math.floor((Math.abs(new Date().getTime() - time) / (1000 * 60 * 60 * 24)) % 24);
 }

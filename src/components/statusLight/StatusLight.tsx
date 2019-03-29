@@ -8,6 +8,7 @@ interface IStatusLightProps {
   text: string;
   type: ResponseCode;
   time?: number;
+  days?: number;
   hours?: number;
   minutes?: number;
 }
@@ -16,6 +17,7 @@ const StatusLight: SFC<IStatusLightProps> = ({
   system,
   text,
   type,
+  days = 0,
   hours = 0,
   minutes = 0,
 }: IStatusLightProps) => {
@@ -27,7 +29,7 @@ const StatusLight: SFC<IStatusLightProps> = ({
       <div className={cn("status__light", { [`status__light--${type}`]: true })}>
         <div> 
           {" "} 
-          {hours} h {minutes} m
+          {days} d {hours} h {minutes} m
         </div>
       </div>
     </div>
