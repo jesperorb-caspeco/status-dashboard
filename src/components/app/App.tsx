@@ -1,6 +1,14 @@
 import React, { PureComponent } from "react";
 import Switch from "react-switch";
-import { allStatuses, Status, defaultPollingRate, compareStatuses, setStatusesInLocalStorage, saveTheme, getTheme } from "../../api";
+import {
+  allStatuses,
+  Status,
+  defaultPollingRate,
+  compareStatuses,
+  setStatusesInLocalStorage,
+  saveTheme,
+  getTheme
+} from "../../api";
 import { URLS } from "../../api/urls";
 import StatusLight from "../statusLight/StatusLight";
 
@@ -46,7 +54,7 @@ class App extends PureComponent<IAppProps, IAppState> {
     }, this.setInLocalStorage);
   };
 
-  private setInLocalStorage = () => {
+  private setInLocalStorage = (): void => {
     setStatusesInLocalStorage(this.state.statuses);
   }
 
@@ -64,7 +72,7 @@ class App extends PureComponent<IAppProps, IAppState> {
     this.setState({ checked });
   };
 
-  renderStatuses = (statuses: Status[] | null) => {
+  renderStatuses = (statuses: Status[] | null): JSX.Element[] | null => {
     if (!statuses) {
       return null;
     }
@@ -82,8 +90,8 @@ class App extends PureComponent<IAppProps, IAppState> {
   };
 
   render() {
-    const checked = <div style={{ paddingTop: 2, paddingLeft: 4 }}>🌝</div>;
-    const unchecked = <div style={{paddingTop: 2, paddingLeft: 4 }}>🌛</div>;
+    const checked = <div style={{ paddingTop: 2, paddingLeft: 4 }}><span role="img" aria-label="Sun">🌝</span></div>;
+    const unchecked = <div style={{paddingTop: 2, paddingLeft: 4 }}><span role="img" aria-label="Moon">🌛</span></div>;
     return (
       <div className="app">
         <div className="last-updated">
@@ -91,7 +99,13 @@ class App extends PureComponent<IAppProps, IAppState> {
           {this.state.lastUpdated && this.state.lastUpdated.toLocaleString("sv-SE")}
         </div>
         <div className="toggle-switch">
-          <Switch onColor="#80adfa" checkedIcon={checked} uncheckedIcon={unchecked} onChange={this.handleChange} checked={this.state.checked} />
+          <Switch
+            onColor="#80adfa"
+            checkedIcon={checked}
+            uncheckedIcon={unchecked}
+            onChange={this.handleChange}
+            checked={this.state.checked}
+          />
         </div>
         {this.renderStatuses(this.state.statuses)}
       </div>

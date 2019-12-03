@@ -30,7 +30,7 @@ export interface Status {
   minutes?: number;
 }
 
-export async function getStatus(status: Status) {
+export async function getStatus(status: Status): Promise<Status> {
   try {
     const response = await fetch(status.url);
     const badge = await response.text();
@@ -72,36 +72,36 @@ export function setStatusesInLocalStorage(statuses: Status[]): void {
   localStorage.setItem("statuses", JSON.stringify(statuses));
 }
 
-export function saveTheme(checked: boolean) {
+export function saveTheme(checked: boolean): void {
   localStorage.setItem("theme", checked.toString());
 }
 
-export function getTheme() {
+export function getTheme(): boolean {
   const theme = localStorage.getItem("theme");
   return theme === "false" ? false : true;
 }
 
-export async function allStatuses(urls: Status[]) {
+export async function allStatuses(urls: Status[]): Promise<Status[]> {
   return Promise.all(urls.map(getStatus));
 }
 
-function assignStatus(status: Status, responseCode: ResponseCode) {
-  return Object.assign({}, status, { status: responseCode, time: Date.now() });
+function assignStatus(status: Status, responseCode: ResponseCode): Status {
+  return Object.assign({}, status, { status: responseCode, time: Date.now() }) as Status;
 }
 
-function success(status: Status) {
+function success(status: Status): Status {
   return assignStatus(status, ResponseCode.Success);
 }
 
-function failed(status: Status) {
+function failed(status: Status): Status {
   return assignStatus(status, ResponseCode.Failed);
 }
 
-function unknown(status: Status) {
+function unknown(status: Status): Status {
   return assignStatus(status, ResponseCode.Unknown);
 }
 
-export function compareStatuses(previousStatuses: Status[], newStatuses: Status[]) {
+export function compareStatuses(previousStatuses: Status[], newStatuses: Status[]): Status[] {
   if (previousStatuses.length > 0 && newStatuses.length > 0) {
     const newSorted = newStatuses.sort(sortByName);
     const previousSorted = previousStatuses.sort(sortByName);
@@ -116,7 +116,7 @@ export function compareStatuses(previousStatuses: Status[], newStatuses: Status[
           })
         : Object.assign(s, {
             time: previousSorted[i].time,
-            days: getDays(newDate),
+            days: getDays(previousSorted[i].time),
             hours: getHours(previousSorted[i].time),
             minutes: getMinutes(previousSorted[i].time),
           })
